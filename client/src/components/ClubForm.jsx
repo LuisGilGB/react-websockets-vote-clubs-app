@@ -1,14 +1,25 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { SocketContext } from "../context/SocketContext";
 
-const ClubForm = ({ onSubmit }) => {
+const ClubForm = () => {
   const [name, setName] = useState("");
+  const { socket } = useContext(SocketContext);
+
+  const createClub = (name) => {
+    socket.emit("create-club", {
+      payload: {
+        name,
+      },
+    });
+  };
+
   return (
     <>
       <h3>Add club</h3>
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          onSubmit(name);
+          createClub(name);
         }}
       >
         <input

@@ -21,6 +21,7 @@ class Sockets {
   socketEvents() {
     // On connection
     this.io.on("connection", (socket) => {
+      console.log("New client connected");
       socket.emit("welcome-from-server", {
         msg: "Welcome from the server",
       });

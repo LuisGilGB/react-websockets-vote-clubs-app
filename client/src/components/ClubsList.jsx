@@ -1,7 +1,34 @@
-import React from "react";
+import React, { useContext } from "react";
+import { SocketContext } from "../context/SocketContext";
 
 const ClubsList = (props) => {
-  const { clubs, onClubNameChange, onVoteClick, onDeleteClubClick } = props;
+  const { clubs } = props;
+  const { socket } = useContext(SocketContext);
+
+  const emitNameChange = (event, clubId) => {
+    socket.emit("club-name-change", {
+      payload: {
+        clubId,
+        newName: event.target.value,
+      },
+    });
+  };
+
+  const addVote = (clubId) => {
+    socket.emit("club-add-vote", {
+      payload: {
+        clubId,
+      },
+    });
+  };
+
+  const deleteClub = (clubId) => {
+    socket.emit("delete-club", {
+      payload: {
+        clubId,
+      },
+    });
+  };
 
   const renderRow = (club) => (
     <tr key={club.id}>
@@ -9,7 +36,7 @@ const ClubsList = (props) => {
         <button
           className="btn btn-primary"
           onClick={() => {
-            onVoteClick(club.id);
+            addVote(club.id);
           }}
         >
           +1
@@ -21,7 +48,7 @@ const ClubsList = (props) => {
           type="text"
           value={club.name}
           onChange={(event) => {
-            onClubNameChange(event, club.id);
+            emitNameChange(event, club.id);
           }}
         />
       </td>
@@ -32,7 +59,7 @@ const ClubsList = (props) => {
         <button
           className="btn btn-danger"
           onClick={() => {
-            onDeleteClubClick(club.id);
+            deleteClub(club.id);
           }}
         >
           Delete
