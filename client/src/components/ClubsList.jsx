@@ -1,9 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../context/SocketContext";
 
 const ClubsList = (props) => {
-  const { clubs } = props;
+  const [clubs, setClubs] = useState([]);
   const { socket } = useContext(SocketContext);
+
+  useEffect(() => {
+    socket.on("clubs-update", ({ payload }) => {
+      setClubs(payload);
+    });
+    return () => socket.off("clubs-update");
+  }, [socket]);
 
   const emitNameChange = (event, clubId) => {
     socket.emit("club-name-change", {

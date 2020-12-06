@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import ClubForm from "./components/ClubForm";
+import ClubsChart from "./components/ClubsChart";
 import ClubsList from "./components/ClubsList";
 import { SocketContext } from "./context/SocketContext";
 
@@ -28,6 +29,11 @@ const Home = () => {
       </div>
       <h1>Club names</h1>
       <hr />
+      <div className="row">
+        <div className="col">
+          <ClubsChart clubs={clubs} />
+        </div>
+      </div>
       <div className="row">
         <div className="col-8">
           <ClubsList clubs={clubs} />
